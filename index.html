@@ -1,105 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Those You Need</title>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#090b12"><title>Those You Need</title>
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#090b12;color:#f5f5ff;font-family:Arial}
-header{padding:20px;background:#121725;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #343047}
-.logo{font-size:21px;font-weight:bold;color:#b99aff}
-button{border:0;padding:12px 16px;border-radius:9px;font-weight:bold;cursor:pointer}
-.btn{background:linear-gradient(90deg,#a78bfa,#5eead4);color:#10111a}
-.dark{background:#242b3d;color:white}
-.hero{padding:65px 22px;background:linear-gradient(130deg,#211b3b,#102c34);text-align:center}
-.hero h1{font-size:38px;margin:10px}
-.hero p{color:#c3c7d8;line-height:1.6}
-main{max-width:1000px;margin:auto;padding:22px}
-h2{margin-top:28px}
-#search,input,textarea{width:100%;padding:13px;background:#151d2b;color:white;border:1px solid #343d50;border-radius:9px;margin:7px 0}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:15px;margin-top:18px}
-.card{background:#151d2b;border:1px solid #30394d;border-radius:14px;overflow:hidden}
-.card img{width:100%;height:160px;object-fit:cover}
-.info{padding:14px}
-.price{color:#5eead4;font-weight:bold}
-footer{text-align:center;padding:30px;color:#999;border-top:1px solid #333;margin-top:40px}
-</style>
-</head>
-<body>
-<header>
-<div class="logo">THOSE YOU NEED</div>
-<button class="dark" onclick="admin()">Admin</button>
-</header>
-
-<section class="hero">
-<h1>Everything You Need.</h1>
-<p>Discover useful products for your everyday life.</p>
-<button class="btn" onclick="document.getElementById('products').scrollIntoView()">Explore Products</button>
-</section>
-
-<main>
-<h2 id="products">Our Products</h2>
-<input id="search" placeholder="Search products..." oninput="showProducts()">
-<div class="grid" id="list"></div>
-</main>
-
-<footer>
-<strong>THOSE YOU NEED</strong><br>
-WhatsApp Order | Cash on Delivery
-</footer>
-
+*{box-sizing:border-box}body{margin:0;background:#090b12;color:#f5f5ff;font-family:Arial,sans-serif}header{padding:16px 20px;background:#121725;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #343047;position:sticky;top:0}.logo{font-size:20px;font-weight:900;color:#b99aff}button{border:0;padding:12px 16px;border-radius:10px;font-weight:bold;cursor:pointer}.btn{background:linear-gradient(90deg,#a78bfa,#5eead4);color:#10111a}.dark{background:#242b3d;color:white;border:1px solid #3a455b}.hero{padding:65px 22px;background:linear-gradient(130deg,#211b3b,#102c34);text-align:center}.hero h1{font-size:clamp(34px,8vw,52px);margin:10px}.hero p{color:#c3c7d8;line-height:1.6;font-size:18px}main{max-width:1050px;margin:auto;padding:24px 18px}h2{margin-top:28px}input,textarea{width:100%;padding:13px;background:#151d2b;color:white;border:1px solid #343d50;border-radius:9px;margin:6px 0;font:inherit}input:focus,textarea:focus{outline:1px solid #a78bfa}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:15px;margin-top:18px}.card{background:#151d2b;border:1px solid #30394d;border-radius:14px;overflow:hidden}.card img{width:100%;height:165px;object-fit:cover}.info{padding:14px}.price{color:#5eead4;font-weight:bold}footer{text-align:center;padding:30px;color:#999;border-top:1px solid #333;margin-top:40px}.modal{display:none;position:fixed;inset:0;background:#000c;z-index:10;align-items:center;justify-content:center;padding:14px}.modal.show{display:flex}.box{background:#111827;border:1px solid #3a455b;border-radius:17px;padding:20px;width:min(520px,100%);max-height:92vh;overflow:auto}.box h2{margin:0 0 8px}.formgrid{display:grid;gap:8px;margin:15px 0}.actions{display:flex;gap:9px;flex-wrap:wrap}.actions button{flex:1}.small{font-size:12px;color:#9aa6ba;line-height:1.5}.admin-item{padding:10px 0;border-bottom:1px solid #30394d;display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}
+</style></head><body>
+<header><div class="logo">THOSE YOU NEED</div><button class="dark" onclick="adminLogin()">Admin</button></header>
+<section class="hero"><h1>Everything You Need.</h1><p>Discover useful products for your everyday life.</p><button class="btn" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Explore Products</button></section>
+<main><h2 id="products">Our Products</h2><input id="search" placeholder="Search products..." oninput="renderProducts()"><div class="grid" id="list"></div></main><footer><strong>THOSE YOU NEED</strong><br>WhatsApp Order | Cash on Delivery</footer>
+<div class="modal" id="adminModal"><div class="box"><h2>Store Admin</h2><p class="small">Manage products from this browser.</p><button class="btn" onclick="openProductForm()">+ Add New Product</button><div id="adminList"></div><div class="actions" style="margin-top:15px"><button class="dark" onclick="closeModal('adminModal')">Close</button></div></div></div>
+<div class="modal" id="productModal"><div class="box"><h2 id="formTitle">Add New Product</h2><div class="formgrid">
+<label>Product name<input id="pName" placeholder="e.g. LED Room Light"></label>
+<label>Price (৳)<input id="pPrice" type="number" min="1" placeholder="e.g. 450"></label>
+<label>Product image URL<input id="pImage" type="url" placeholder="https://example.com/image.jpg"></label>
+<label>Description<textarea id="pDesc" rows="4" placeholder="Write a short product description..."></textarea></label>
+</div><div class="actions"><button class="btn" onclick="saveProduct()">Save Product</button><button class="dark" onclick="closeModal('productModal')">Cancel</button></div><p class="small">Demo only: products are stored in this browser. A shared database is needed for all customers to see updates.</p></div></div>
 <script>
-const whatsapp="8801739237204";
-let products=JSON.parse(localStorage.getItem("products")||"[]");
-
-function save(){localStorage.setItem("products",JSON.stringify(products))}
-function showProducts(){
-let q=document.getElementById("search").value.toLowerCase();
-let list=document.getElementById("list");
-list.innerHTML="";
-products.filter(p=>p.name.toLowerCase().includes(q)).forEach((p,i)=>{
-list.innerHTML+=`
-<div class="card">
-${p.image?`<img src="${p.image}">`:""}
-<div class="info">
-<h3>${p.name}</h3>
-<p>${p.desc||""}</p>
-<p class="price">৳${p.price}</p>
-<button class="btn" onclick="order(${i})">Order Now</button>
-</div></div>`;
-});
-if(!list.innerHTML)list.innerHTML="<p>No products available yet.</p>";
-}
-function order(i){
-let p=products[i];
-let msg=`Hello, I want to order ${p.name}. Price: ৳${p.price}. Payment: Cash on Delivery.`;
-window.open("https://wa.me/"+whatsapp+"?text="+encodeURIComponent(msg));
-}
-function admin(){
-let pin=prompt("Enter admin PIN");
-if(pin!=="2468"){alert("Wrong PIN");return}
-let action=prompt("Type ADD, EDIT or DELETE");
-if(action==="ADD"){
-let name=prompt("Product name");
-let price=prompt("Price");
-let image=prompt("Image URL (optional)")||"";
-let desc=prompt("Description")||"";
-if(name&&price){products.push({name,price,image,desc});save();showProducts()}
-}else if(action==="DELETE"){
-let n=Number(prompt("Product number to delete (1, 2, 3...)"));
-if(n>0&&n<=products.length){products.splice(n-1,1);save();showProducts()}
-}else if(action==="EDIT"){
-let n=Number(prompt("Product number to edit"));
-if(n>0&&n<=products.length){
-let p=products[n-1];
-p.name=prompt("New name",p.name)||p.name;
-p.price=prompt("New price",p.price)||p.price;
-save();showProducts();
-}
-}
-}
-showProducts();
-</script>
-</body>
-</html>
+const WHATSAPP='8801739237204';let products=JSON.parse(localStorage.getItem('ty_products')||'[]');let editingId=null;
+function persist(){localStorage.setItem('ty_products',JSON.stringify(products))}
+function safe(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function renderProducts(){const q=document.getElementById('search').value.toLowerCase(),list=document.getElementById('list');list.innerHTML='';const found=products.filter(p=>(p.name+' '+p.desc).toLowerCase().includes(q));if(!found.length){list.innerHTML='<p style="color:#aab2c2">No products available yet.</p>';return}found.forEach(p=>{const card=document.createElement('article');card.className='card';card.innerHTML=(p.image?'<img src="'+safe(p.image)+'" alt="'+safe(p.name)+'">':'')+'<div class="info"><h3>'+safe(p.name)+'</h3><p>'+safe(p.desc)+'</p><p class="price">৳'+Number(p.price).toLocaleString('en-BD')+'</p><button class="btn" onclick="orderProduct('+p.id+')">Order on WhatsApp</button></div>';list.appendChild(card)})}
+function adminLogin(){const pin=prompt('Demo admin PIN (2468)');if(pin!=='2468'){alert('Incorrect PIN');return}renderAdmin();document.getElementById('adminModal').classList.add('show')}
+function renderAdmin(){document.getElementById('adminList').innerHTML=products.map(p=>'<div class="admin-item"><span>'+safe(p.name)+' — ৳'+safe(p.price)+'</span><span><button class="dark" onclick="editProduct('+p.id+')">Edit</button> <button class="dark" onclick="deleteProduct('+p.id+')">Delete</button></span></div>').join('')||'<p class="small">No products added yet.</p>'}
+function openProductForm(){editingId=null;document.getElementById('formTitle').textContent='Add New Product';['pName','pPrice','pImage','pDesc'].forEach(id=>document.getElementById(id).value='');document.getElementById('productModal').classList.add('show')}
+function editProduct(id){const p=products.find(x=>x.id===id);if(!p)return;editingId=id;document.getElementById('pName').value=p.name;document.getElementById('pPrice').value=p.price;document.getElementById('pImage').value=p.image||'';document.getElementById('pDesc').value=p.desc||'';document.getElementById('formTitle').textContent='Edit Product';document.getElementById('productModal').classList.add('show')}
+function saveProduct(){const name=document.getElementById('pName').value.trim(),price=Number(document.getElementById('pPrice').value),image=document.getElementById('pImage').value.trim(),desc=document.getElementById('pDesc').value.trim();if(!name||!price||price<1){alert('Enter product name and valid price');return}if(image&&!/^https?:\/\//i.test(image)){alert('Image URL must start with http:// or https://');return}const p={id:editingId||Date.now(),name,price,image,desc};if(editingId)products=products.map(x=>x.id===editingId?p:x);else products.unshift(p);persist();renderProducts();renderAdmin();closeModal('productModal')}
+function deleteProduct(id){if(confirm('Delete this product?')){products=products.filter(p=>p.id!==id);persist();renderProducts();renderAdmin()}}
+function orderProduct(id){const p=products.find(x=>x.id===id);if(!p)return;const msg='Hello, I want to order: '+p.name+'%0APrice: ৳'+p.price+'%0APayment: Cash on Delivery';window.open('https://wa.me/'+WHATSAPP+'?text='+encodeURIComponent(msg),'_blank')}
+function closeModal(id){document.getElementById(id).classList.remove('show')}renderProducts();
+</script></body></html>
