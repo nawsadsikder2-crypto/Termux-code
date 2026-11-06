@@ -54,5 +54,7 @@ function resetProductForm(){editingId=null;["productName","productPrice","produc
 async function deleteProduct(id){const p=products.find(x=>String(x.id)===String(id));if(!p||!confirm(`Delete "${p.name}"?`))return;const {error}=await db.from("products").delete().eq("id",id);if(error){alert("Could not delete: "+error.message);return}await loadProducts()}
 document.getElementById("year").textContent=new Date().getFullYear();updateCartCount();
 db.auth.getSession().then(({data})=>{if(data.session){document.getElementById("adminBox").classList.remove("hidden");document.getElementById("adminToggle").textContent="Admin Panel";setStatus("adminStatus","Admin session active.");renderProducts()}});
-loadProducts();
+if (location.hash === "#owner") {
+  document.getElementById("adminSection").classList.remove("hidden");
+}loadProducts();
 </script></body></html>
